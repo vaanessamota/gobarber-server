@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { parseISO } from 'date-fns';
+import { container } from 'tsyringe';
 import AppointmentsRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentsRepository';
 import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
@@ -24,16 +25,14 @@ appointmentsRouter.use(ensureAuthenticated);
 
 
 appointmentsRouter.post('/', async (request, response)=>{
-    const appointmentsRepository = new AppointmentsRepository();
-
     const { provider_id, date } = request.body;
     //provider é o prestador ou barbeiro que irá atender
 
     const parsedDate = parseISO(date)
 
-    const createAppointment = new CreateAppointmentService(
-        appointmentsRepository
-    );
+    const createAppointment = container.resolve(CreateAppointmentService);
+    // resolve: carrega o service, vê se precisa de dependencia, e retorna uma
+    // instancia da classe
 
     const appointment = await createAppointment.execute({
         date: parsedDate,

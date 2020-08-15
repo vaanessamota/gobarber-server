@@ -1,4 +1,5 @@
 import User from '@modules/users/infra/typeorm/entities/User';
+import { inject, injectable } from 'tsyringe';
 import { hash } from 'bcryptjs';
 import AppError from '@shared/errors/AppError';
 import IUsersRepository from '../repositories/IUsersRepository';
@@ -12,8 +13,12 @@ interface IRequest {
 // se os metodos para lidar com dados de usuarios forem padroes nao é necessario
 // criar um repositorio, utilizar apenas getRepository(User)
 
+@injectable()
 class CreateUserService {
-    constructor(private usersRepository: IUsersRepository) {
+    constructor(
+        @inject('UsersRepository')
+        private usersRepository: IUsersRepository,
+        ) {
 
     }
 
