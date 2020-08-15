@@ -8,8 +8,6 @@ import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAut
 // resposta
 
 const appointmentsRouter = Router();
-const appointmentsRepository = new AppointmentsRepository();
-// apenas o repositorio pode trabalhar em cima dos dados em appointments
 
 /**
  * DTO - Data Transfer Object
@@ -26,6 +24,8 @@ appointmentsRouter.use(ensureAuthenticated);
 
 
 appointmentsRouter.post('/', async (request, response)=>{
+    const appointmentsRepository = new AppointmentsRepository();
+
     const { provider_id, date } = request.body;
     //provider é o prestador ou barbeiro que irá atender
 

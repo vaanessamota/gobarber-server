@@ -1,26 +1,29 @@
-import { getRepository } from 'typeorm';
 import User from '@modules/users/infra/typeorm/entities/User';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import AppError from '@shared/errors/AppError';
+import IUsersRepository from '../repositories/IUsersRepository';
 
-interface Request {
+
+interface IRequest {
     email: string;
     password: string;
 }
 
-interface Response {
+interface IResponse {
     user: User;
     token: string;
 }
 
 class AuthenticateUserService {
+    constructor(private usersRepository: IUsersRepository) {
 
-    public async execute({ email, password }: Request): Promise<Response> {
-        const usersRepository = getRepository(User);
+    }
 
-        const user = await usersRepository.findOne({ where: { email } });
+    public async execute({ email, password }: IRequest): Promise<IResponse> {
+
+        const user = await this.usersRepository.findByEmail(email);
         //verificar se o usuário existe atraves do email
         if (!user){
             //se nao existe retorna erro
