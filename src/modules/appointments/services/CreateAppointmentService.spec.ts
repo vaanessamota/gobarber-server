@@ -5,7 +5,7 @@ import CreateAppointmentService from './CreateAppointmentService';
 
 describe('CreateAppointment', ()=> {
     it('should be able to create a new appointment',  async ()=>{
-        const fakeAppointmentsRepository = new FakeAppointmentsRepository;
+        const fakeAppointmentsRepository = new FakeAppointmentsRepository();
         const CreateAppointment = new CreateAppointmentService(
             fakeAppointmentsRepository,
         );
@@ -19,7 +19,7 @@ describe('CreateAppointment', ()=> {
         expect(appointment.provider_id).toBe('12432434');
     });
 
-    it('should not be able to create a two appointments at the same time',
+    it('should not be able to create two appointments at the same time',
     async () => {
         const fakeAppointmentsRepository = new FakeAppointmentsRepository;
         const createAppointment = new CreateAppointmentService(
