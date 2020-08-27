@@ -34,7 +34,7 @@ describe('CreateUser', ()=> {
             fakeUsersRepository,
             fakeHashProvider,
         );
-        const user = await createUser.execute({
+        await createUser.execute({
             name: 'Vanessa',
             email: 'vanessa@email.com',
             password: '123456'
